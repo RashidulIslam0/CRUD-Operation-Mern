@@ -19,6 +19,14 @@ router.get("/", async (req, res) => {
 
 // create data || save data in mongo db
 
+//http://localhost:3000/create
+/*
+    {
+        name,
+        email,
+        mobile
+    }
+*/
 router.post("/create", async (req, res) => {
   console.log(req.body);
 
@@ -42,6 +50,16 @@ router.post("/create", async (req, res) => {
 
 // update data
 
+//http://localhost:3000/update/id
+
+/**
+ * {
+ *      id:"",
+ *      name:"",
+ *      email:"",
+ *      mobile:""
+ * }
+ */
 router.put("/update/:userId", async (req, res) => {
   const userId = req.params.userId;
   const newData = req.body; // Assuming req.body contains the new data you want to set
@@ -74,8 +92,8 @@ router.put("/update/:userId", async (req, res) => {
   }
 });
 
-// delete data
-
+// delete api
+//http://localhost:3000/delete/id
 router.delete("/delete/:userId", async (req, res) => {
   const userId = req.params.userId;
 
