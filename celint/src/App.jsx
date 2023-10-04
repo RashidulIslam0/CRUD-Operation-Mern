@@ -6,13 +6,16 @@ import axios from "axios";
 axios.defaults.baseURL = "http://localhost:3000/";
 function App() {
   const [addSection, setAddSection] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    mobile: "",
-  });
+  const [formData, setFormData] = useState([
+    {
+      name: "",
+      email: "",
+      mobile: "",
+    },
+  ]);
 
-  const [allData, setAllData] = useState([]); // State to store all fetched data
+  const [allData, setAllData] = useState([]);
+  // State to store all fetched data
   const handleOnChange = (e) => {
     const { value, name } = e.target;
     setFormData((prev) => ({
@@ -20,13 +23,6 @@ function App() {
       [name]: value,
     }));
   };
-
-  // const submitHandler = async (e) => {
-  //   e.preventDefault();
-  //   const data = await axios.post("/create", formData);
-  //   console.log(data);
-  // };
-
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -37,19 +33,11 @@ function App() {
     } catch (error) {
       console.error("Error:", error);
     }
-
-    // get all data
-    // try {
-    //   const response = await axios.post("/create", formData);
-    //   console.log("Server response:", response.data);
-    // } catch (error) {
-    //   console.error("Error:", error);
-    // }
   };
   const fetchData = async () => {
     try {
       const response = await axios.get("/");
-      setAllData(response.data); // Update the state with the fetched data
+      setAllData(response.data.data); // Update the state with the fetched data
       console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -124,6 +112,35 @@ function App() {
             </div>
           </div>
         )}
+
+        <table className="table mt-3">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Mobile</th>
+              <th scope="col">Edit</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {allData.map((el, index) => {
+              return (
+                <tr key={index}>
+                  <td>{el.name}</td>
+                  <td>{el.email}</td>
+                  <td>{el.mobile}</td>
+                  <td>
+                    <button className="btn btn-primary">Edit</button>
+                  </td>
+                  <td>
+                    <button className="btn btn-danger">Delete</button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </>
   );
