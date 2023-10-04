@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { IoMdClose } from "react-icons/io";
 import axios from "axios";
@@ -12,6 +12,7 @@ function App() {
     mobile: "",
   });
 
+  const [allData, setAllData] = useState([]); // State to store all fetched data
   const handleOnChange = (e) => {
     const { value, name } = e.target;
     setFormData((prev) => ({
@@ -29,13 +30,36 @@ function App() {
   const submitHandler = async (e) => {
     e.preventDefault();
 
+    // created data
     try {
       const response = await axios.post("/create", formData);
       console.log("Server response:", response.data);
     } catch (error) {
       console.error("Error:", error);
     }
+
+    // get all data
+    // try {
+    //   const response = await axios.post("/create", formData);
+    //   console.log("Server response:", response.data);
+    // } catch (error) {
+    //   console.error("Error:", error);
+    // }
   };
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("/");
+      setAllData(response.data); // Update the state with the fetched data
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch data when the component mounts
+    fetchData();
+  }, []);
 
   return (
     <>
