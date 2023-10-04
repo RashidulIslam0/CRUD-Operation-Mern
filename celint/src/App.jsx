@@ -34,6 +34,8 @@ function App() {
       console.error("Error:", error);
     }
   };
+
+  // fetch all data
   const fetchData = async () => {
     try {
       const response = await axios.get("/");
@@ -48,6 +50,20 @@ function App() {
     // Fetch data when the component mounts
     fetchData();
   }, []);
+
+  // delete data
+
+  const hendleDelete = async (userId) => {
+    try {
+      const response = await axios.delete("/delete/" + userId);
+      alert(response.data.message);
+      if (response.data.message) {
+        fetchData();
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   return (
     <>
@@ -134,7 +150,12 @@ function App() {
                     <button className="btn btn-primary">Edit</button>
                   </td>
                   <td>
-                    <button className="btn btn-danger">Delete</button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => hendleDelete(el._id)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               );
